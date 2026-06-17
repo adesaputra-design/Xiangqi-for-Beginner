@@ -1,0 +1,152 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: #f5f0e8;
+  color: #2c2416;
+  min-height: 100dvh;
+  line-height: 1.6;
+}
+
+/* ===== Beranda ===== */
+
+.beranda {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+.beranda__header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.beranda__judul {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #8b2500;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.beranda__deskripsi {
+  font-size: 0.95rem;
+  color: #5c4a2a;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* ===== Modul List ===== */
+
+.beranda__modul {
+  margin-bottom: 32px;
+}
+
+.modul-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+}
+
+.modul-card {
+  background: #ffffff;
+  border: 1px solid #e0d6c2;
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.modul-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.modul-card__header {
+  margin-bottom: 8px;
+}
+
+.modul-card__nama {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #2c2416;
+}
+
+.modul-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.modul-card__estimasi {
+  font-size: 0.85rem;
+  color: #7a6b50;
+}
+
+.modul-card__status {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.status-selesai {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-lanjutkan {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-segera {
+  background: #e8e0d4;
+  color: #5c4a2a;
+}
+
+/* ===== Footer ===== */
+
+.beranda__footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #8a7b60;
+  padding-top: 24px;
+  border-top: 1px solid #e0d6c2;
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 360px) {
+  .beranda {
+    padding: 16px 12px 32px;
+  }
+
+  .beranda__judul {
+    font-size: 1.45rem;
+  }
+
+  .modul-card {
+    padding: 14px 14px;
+  }
+
+  .modul-card__nama {
+    font-size: 0.95rem;
+  }
+}
