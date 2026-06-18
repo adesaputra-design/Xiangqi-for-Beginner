@@ -34,14 +34,15 @@ function cellY(baris: number): number {
 // Label bilingual
 // ============================================================
 
+/** Nama bidak bilingual + singkatan WXF */
 const NAMA_BIDAK: Record<PieceType, string> = {
-  [PieceType.Jiang]: "Raja (Jiang)",
-  [PieceType.Shi]: "Menteri (Shi)",
-  [PieceType.Xiang]: "Gajah (Xiang)",
-  [PieceType.Ma]: "Kuda (Ma)",
-  [PieceType.Che]: "Benteng (Che)",
-  [PieceType.Pao]: "Meriam (Pao)",
-  [PieceType.Bing]: "Prajurit (Bing)",
+  [PieceType.Jiang]: "Jenderal / Raja (K)",
+  [PieceType.Shi]: "Menteri / Penasihat (A)",
+  [PieceType.Xiang]: "Gajah (E)",
+  [PieceType.Ma]: "Kuda (H)",
+  [PieceType.Che]: "Benteng (R)",
+  [PieceType.Pao]: "Meriam (C)",
+  [PieceType.Bing]: "Prajurit (P)",
 };
 
 const SIMBOL_BIDAK: Record<PieceType, Record<Side, string>> = {
@@ -94,12 +95,13 @@ function renderGrid(): string {
   const riverY = (cellY(5) + cellY(6)) / 2;
   lines += `<text x="${BOARD_WIDTH / 2}" y="${riverY}" text-anchor="middle" dominant-baseline="central" font-size="22" fill="#8b7355" font-weight="bold" letter-spacing="8">楚 河　　　　漢 界</text>`;
 
-  // Koordinat
-  const kolomLabels = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
+  // Koordinat WXF: lajur 9 (kiri) → 1 (kanan) dari perspektif Merah
+  // kolom 0 = lajur 9, kolom 8 = lajur 1
   for (let c = 0; c < 9; c++) {
+    const wxfFile = 9 - c; // 9, 8, 7, ..., 1
     const x = cellX(c);
-    lines += `<text x="${x}" y="${cellY(1) + 18}" text-anchor="middle" font-size="10" fill="#6b5a40">${kolomLabels[c]}</text>`;
-    lines += `<text x="${x}" y="${cellY(10) - 12}" text-anchor="middle" font-size="10" fill="#6b5a40">${kolomLabels[c]}</text>`;
+    lines += `<text x="${x}" y="${cellY(1) + 18}" text-anchor="middle" font-size="10" fill="#6b5a40">${wxfFile}</text>`;
+    lines += `<text x="${x}" y="${cellY(10) - 12}" text-anchor="middle" font-size="10" fill="#6b5a40">${wxfFile}</text>`;
   }
   for (let r = 1; r <= 10; r++) {
     const y = cellY(r);
