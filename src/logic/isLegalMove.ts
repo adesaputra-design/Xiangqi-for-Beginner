@@ -132,7 +132,9 @@ export function isLegalMove(
     case PieceType.Jiang:
       moveValid = isValidJiangMove(dari, ke, side);
       break;
-    // Piece lain belum diimplementasi — return false
+    case PieceType.Pao:
+      moveValid = isValidPaoMove(board, dari, ke);
+      break;
     default:
       moveValid = false;
   }
@@ -155,19 +157,55 @@ function isValidJiangMove(
   ke: Position,
   side: Side
 ): boolean {
-  // Hanya boleh 1 langkah ortogonal
   const dBaris = Math.abs(ke.baris - dari.baris);
   const dKolom = Math.abs(ke.kolom - dari.kolom);
 
-  // Tepat 1 langkah: (1,0) atau (0,1)
   if (!((dBaris === 1 && dKolom === 0) || (dBaris === 0 && dKolom === 1))) {
     return false;
   }
 
-  // Harus tetap dalam palace
   if (!isInPalace(ke.baris, ke.kolom, side)) {
     return false;
   }
 
   return true;
+}
+
+// ============================================================
+// Pao movement validation
+// ============================================================
+
+function isValidPaoMove(
+  board: BoardState,
+  dari: Position,
+  ke: Position
+): boolean {
+  const dBaris = ke.baris - dari.baris;
+  const dKolom = ke.kolom - dari.kolom;
+
+  // Harus bergerak lurus (horizontal atau vertikal)
+  if (dBaris !== 0 && dKolom !== 0) return false;
+  if (dBaris === 0 && dKolom === 0) return false;
+
+  const target = board[ke.baris - 1][ke.kolom];
+  const stepBaris = dBaris === 0 ? 0 : dBaris > 0 ? 1 : -1;
+  const stepKolom = dKolom === 0 ? 0 : dKolom > 0 ? 1 : -1;
+
+  // Hitung bidak di antara dari dan ke (tidak termasuk ke)
+  let piecesInBetween = 0;
+  let r = dari.baris + stepBaris;
+  let c = dari.kolom + stepKolom;
+  while (r !== ke.baris || c !== ke.kolom) {
+    if (board[r - 1][c] !== null) piecesInBetween++;
+    r += stepBaris;
+    c += stepKolom;
+  }
+
+  if (target === null) {
+    // Gerak biasa: tidak boleh ada bidak penghalang
+    return piecesInBetween === 0;
+  } else {
+    // Tangkap: harus tepat 1 screen di antara dari dan ke
+    return piecesInBetween === 1;
+  }
 }
