@@ -43,7 +43,7 @@ function renderModulCard(modul: ModulInfo): string {
   const cssClass = statusClass(status);
 
   return `
-    <li class="modul-card">
+    <li class="modul-card" data-modul-id="${modul.id}">
       <div class="modul-card__header">
         <h2 class="modul-card__nama">${modul.nama}</h2>
       </div>

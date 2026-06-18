@@ -1,36 +1,64 @@
 import { renderBeranda } from "./ui/renderBeranda";
 import { renderPapan } from "./ui/renderPapan";
 import { createInitialBoard } from "./data/papan";
+import { renderQuiz } from "./ui/renderQuiz";
+import { SOAL_FACE_OFF, BOARD_SOAL_FACE_OFF } from "./data/quizFaceOff";
 import "./style.css";
 
-function showBeranda(container: HTMLElement): void {
-  renderBeranda(container);
-
-  // Event listener untuk tombol "Lihat Papan"
-  const btn = container.querySelector(".js-btn-papan");
-  if (btn) {
-    btn.addEventListener("click", () => showPapan(container));
-  }
-}
-
-function showPapan(container: HTMLElement): void {
-  const board = createInitialBoard();
-  renderPapan(container, board);
-
-  // Tambahkan tombol kembali ke beranda
-  const wrapper = container.querySelector(".papan-wrapper");
-  if (wrapper) {
-    const backBtn = document.createElement("a");
-    backBtn.href = "#";
-    backBtn.className = "papan-back-btn";
-    backBtn.textContent = "← Kembali ke Beranda";
-    backBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      showBeranda(container);
-    });
-    wrapper.parentElement?.insertBefore(backBtn, wrapper);
-  }
-}
-
 const root = document.body;
-showBeranda(root);
+
+function showBeranda(): void {
+  renderBeranda(root);
+
+  // Tombol "Lihat Papan"
+  const btnPapan = root.querySelector(".js-btn-papan");
+  if (btnPapan) {
+    btnPapan.addEventListener("click", (e) => {
+      e.preventDefault();
+      showPapan();
+    });
+  }
+
+  // Klik modul card → ke quiz
+  const modulCards = root.querySelectorAll(".modul-card");
+  modulCards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      const modulId = (card as HTMLElement).dataset.modulId;
+      if (modulId === "modul-1") {
+        showQuizFaceOff();
+      }
+      // modul-2..5 belum tersedia
+    });
+  });
+}
+
+function showPapan(): void {
+  const board = createInitialBoard();
+  renderPapan(root, board, true);
+}
+
+function showQuizFaceOff(): void {
+  renderQuiz(root, {
+    soal: SOAL_FACE_OFF,
+    boardMap: BOARD_SOAL_FACE_OFF,
+    judulModul: "Modul 1 — General Face-off",
+    modulId: "modul-1",
+    onSelesai: (skor) => {
+      // Simpan progress ke localStorage
+      const progress = {
+        selesai: skor.persen >= 70,
+        mulai: true,
+        skor: skor.persen,
+      };
+      localStorage.setItem("progress-modul-1", JSON.stringify(progress));
+    },
+  });
+}
+
+// Listen for navigate-beranda custom event
+window.addEventListener("navigate-beranda", () => {
+  showBeranda();
+});
+
+// Initial load
+showBeranda();
