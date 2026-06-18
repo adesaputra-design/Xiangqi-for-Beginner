@@ -135,6 +135,9 @@ export function isLegalMove(
     case PieceType.Bing:
       moveValid = isValidBingMove(dari, ke, side);
       break;
+    case PieceType.Ma:
+      moveValid = isValidMaMove(board, dari, ke);
+      break;
     default:
       moveValid = false;
   }
@@ -239,4 +242,41 @@ function isValidBingMove(
   // Ke samping (deltaBaris === 0) → hanya legal setelah menyeberang sungai
   const sudahSeberang = side === Side.Red ? dari.baris >= 6 : dari.baris <= 5;
   return sudahSeberang;
+}
+
+// ============================================================
+// Ma (Kuda) movement validation
+// ============================================================
+
+function isValidMaMove(
+  board: BoardState,
+  dari: Position,
+  ke: Position
+): boolean {
+  const dBaris = ke.baris - dari.baris;
+  const dKolom = ke.kolom - dari.kolom;
+  const absDBaris = Math.abs(dBaris);
+  const absDKolom = Math.abs(dKolom);
+
+  // Harus bentuk L: (2,1) atau (1,2)
+  if (
+    !((absDBaris === 2 && absDKolom === 1) || (absDBaris === 1 && absDKolom === 2))
+  ) {
+    return false;
+  }
+
+  // Tentukan posisi kaki (langkah ortogonal pertama)
+  let legBaris: number;
+  let legKolom: number;
+
+  if (absDBaris === 2) {
+    legBaris = dari.baris + (dBaris > 0 ? 1 : -1);
+    legKolom = dari.kolom;
+  } else {
+    legBaris = dari.baris;
+    legKolom = dari.kolom + (dKolom > 0 ? 1 : -1);
+  }
+
+  // Kaki harus kosong
+  return board[legBaris - 1][legKolom] === null;
 }
