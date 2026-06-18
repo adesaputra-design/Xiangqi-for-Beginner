@@ -72,6 +72,9 @@ export function renderBeranda(container: HTMLElement): void {
         <ol class="modul-list">
           ${cards}
         </ol>
+        <div class="beranda__papan-link">
+          <a href="#" class="btn-papan js-btn-papan">🏁 Lihat Papan Posisi Awal</a>
+        </div>
       </section>
 
       <footer class="beranda__footer">
