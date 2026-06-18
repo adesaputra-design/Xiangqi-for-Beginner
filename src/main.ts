@@ -4,6 +4,7 @@ import { createInitialBoard } from "./data/papan";
 import { renderQuiz } from "./ui/renderQuiz";
 import { SOAL_FACE_OFF, BOARD_SOAL_FACE_OFF } from "./data/quizFaceOff";
 import { SOAL_PAO, BOARD_SOAL_PAO } from "./data/quizPao";
+import { SOAL_BING, BOARD_SOAL_BING } from "./data/quizBing";
 import "./style.css";
 
 const root = document.body;
@@ -29,6 +30,8 @@ function showBeranda(): void {
         showQuizFaceOff();
       } else if (modulId === "modul-2") {
         showQuizPao();
+      } else if (modulId === "modul-3") {
+        showQuizBing();
       }
     });
   });
@@ -70,6 +73,23 @@ function showQuizPao(): void {
         skor: skor.persen,
       };
       localStorage.setItem("progress-modul-2", JSON.stringify(progress));
+    },
+  });
+}
+
+function showQuizBing(): void {
+  renderQuiz(root, {
+    soal: SOAL_BING,
+    boardMap: BOARD_SOAL_BING,
+    judulModul: "Modul 3 — Prajurit (Bing)",
+    modulId: "modul-3",
+    onSelesai: (skor) => {
+      const progress = {
+        selesai: skor.persen >= 70,
+        mulai: true,
+        skor: skor.persen,
+      };
+      localStorage.setItem("progress-modul-3", JSON.stringify(progress));
     },
   });
 }

@@ -247,7 +247,7 @@ describe("Face-off — moving blocker creates illegal position", () => {
   // NOTE: Test "blocker moves along same column" dan "multiple blockers" akan
   // diaktifkan di Fase 4 setelah Bing/Pao diimplementasi di isLegalMove.
   // Saat ini hanya Jiang yang diimplementasi (Fase 3 scope).
-  it.todo("should allow moving blocker along the same column (face-off maintained blocked) - need Bing impl", () => {
+  it("should allow moving blocker along the same column (face-off maintained blocked)", () => {
     const board = createBoard({
       "1-4": "red.jiang",
       "5-4": "red.bing",
@@ -256,7 +256,7 @@ describe("Face-off — moving blocker creates illegal position", () => {
     expect(legal(board, 5, 4, 6, 4, Side.Red)).toBe(true);
   });
 
-  it.todo("should allow moving a piece that is NOT the only blocker - need Pao impl", () => {
+  it("should allow moving a piece that is NOT the only blocker", () => {
     const board = createBoard({
       "1-4": "red.jiang",
       "5-4": "red.bing",

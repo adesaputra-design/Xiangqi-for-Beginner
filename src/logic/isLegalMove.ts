@@ -91,9 +91,6 @@ function isInPalace(baris: number, kolom: number, side: Side): boolean {
  * - Memvalidasi gerakan dasar bidak
  * - Memvalidasi tidak menangkap bidak sendiri
  * - Memvalidasi langkah tidak menciptakan face-off
- *
- * Catatan: Fase 3 hanya implementasi Jiang. Piece lain
- * mengembalikan false (belum diimplementasi).
  */
 export function isLegalMove(
   board: BoardState,
@@ -134,6 +131,9 @@ export function isLegalMove(
       break;
     case PieceType.Pao:
       moveValid = isValidPaoMove(board, dari, ke);
+      break;
+    case PieceType.Bing:
+      moveValid = isValidBingMove(dari, ke, side);
       break;
     default:
       moveValid = false;
@@ -208,4 +208,35 @@ function isValidPaoMove(
     // Tangkap: harus tepat 1 screen di antara dari dan ke
     return piecesInBetween === 1;
   }
+}
+
+// ============================================================
+// Bing movement validation
+// ============================================================
+
+function isValidBingMove(
+  dari: Position,
+  ke: Position,
+  side: Side
+): boolean {
+  const dBaris = Math.abs(ke.baris - dari.baris);
+  const dKolom = Math.abs(ke.kolom - dari.kolom);
+
+  // Hanya 1 langkah orthogonal
+  if (!((dBaris === 1 && dKolom === 0) || (dBaris === 0 && dKolom === 1))) {
+    return false;
+  }
+
+  const deltaBaris = ke.baris - dari.baris;
+  const arahMaju = side === Side.Red ? 1 : -1;
+
+  // Mundur → selalu illegal
+  if (deltaBaris === -arahMaju) return false;
+
+  // Maju → selalu legal
+  if (deltaBaris === arahMaju) return true;
+
+  // Ke samping (deltaBaris === 0) → hanya legal setelah menyeberang sungai
+  const sudahSeberang = side === Side.Red ? dari.baris >= 6 : dari.baris <= 5;
+  return sudahSeberang;
 }
