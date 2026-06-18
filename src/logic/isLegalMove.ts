@@ -138,6 +138,9 @@ export function isLegalMove(
     case PieceType.Ma:
       moveValid = isValidMaMove(board, dari, ke);
       break;
+    case PieceType.Xiang:
+      moveValid = isValidXiangMove(board, dari, ke, piece.side);
+      break;
     default:
       moveValid = false;
   }
@@ -279,4 +282,30 @@ function isValidMaMove(
 
   // Kaki harus kosong
   return board[legBaris - 1][legKolom] === null;
+}
+
+// ============================================================
+// Xiang (Gajah) movement validation
+// ============================================================
+
+function isValidXiangMove(
+  board: BoardState,
+  dari: Position,
+  ke: Position,
+  side: Side
+): boolean {
+  const dBaris = ke.baris - dari.baris;
+  const dKolom = ke.kolom - dari.kolom;
+
+  // Harus diagonal tepat 2 langkah
+  if (Math.abs(dBaris) !== 2 || Math.abs(dKolom) !== 2) return false;
+
+  // Tidak boleh menyeberangi sungai
+  if (side === Side.Red && ke.baris > 5) return false;
+  if (side === Side.Black && ke.baris < 6) return false;
+
+  // Mata gajah = kotak tengah diagonal, harus kosong
+  const mataBaris = dari.baris + (dBaris > 0 ? 1 : -1);
+  const mataKolom = dari.kolom + (dKolom > 0 ? 1 : -1);
+  return board[mataBaris - 1][mataKolom] === null;
 }

@@ -6,6 +6,7 @@ import { SOAL_FACE_OFF, BOARD_SOAL_FACE_OFF } from "./data/quizFaceOff";
 import { SOAL_PAO, BOARD_SOAL_PAO } from "./data/quizPao";
 import { SOAL_BING, BOARD_SOAL_BING } from "./data/quizBing";
 import { SOAL_MA, BOARD_SOAL_MA } from "./data/quizMa";
+import { SOAL_XIANG, BOARD_SOAL_XIANG } from "./data/quizXiang";
 import "./style.css";
 
 const root = document.body;
@@ -35,6 +36,8 @@ function showBeranda(): void {
         showQuizBing();
       } else if (modulId === "modul-4") {
         showQuizMa();
+      } else if (modulId === "modul-5") {
+        showQuizXiang();
       }
     });
   });
@@ -110,6 +113,23 @@ function showQuizMa(): void {
         skor: skor.persen,
       };
       localStorage.setItem("progress-modul-4", JSON.stringify(progress));
+    },
+  });
+}
+
+function showQuizXiang(): void {
+  renderQuiz(root, {
+    soal: SOAL_XIANG,
+    boardMap: BOARD_SOAL_XIANG,
+    judulModul: "Modul 5 — Gajah (Xiang)",
+    modulId: "modul-5",
+    onSelesai: (skor) => {
+      const progress = {
+        selesai: skor.persen >= 70,
+        mulai: true,
+        skor: skor.persen,
+      };
+      localStorage.setItem("progress-modul-5", JSON.stringify(progress));
     },
   });
 }
