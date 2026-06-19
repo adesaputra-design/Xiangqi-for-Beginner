@@ -71,11 +71,11 @@ describe("renderBeranda — structure", () => {
     expect(badges[4].textContent).toBe("Prasyarat 5");
   });
 
-  it("should render all modules as Segera Hadir initially", () => {
+  it("should render all modules as Mainkan initially", () => {
     renderBeranda(container);
     const statuses = container.querySelectorAll(".modul-card__status");
     for (const el of statuses) {
-      expect(el.textContent).toBe("Segera Hadir");
+      expect(el.textContent).toBe("Mainkan");
       expect(el.classList.contains("status-segera")).toBe(true);
     }
   });

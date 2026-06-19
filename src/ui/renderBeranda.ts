@@ -22,7 +22,7 @@ function statusLabel(status: StatusModul): string {
     case "lanjutkan":
       return "Lanjutkan →";
     case "segera-hadir":
-      return "Segera Hadir";
+      return "Mainkan";
   }
 }
 
