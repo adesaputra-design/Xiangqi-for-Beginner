@@ -47,6 +47,21 @@ body {
   margin: 0 auto;
 }
 
+/* ===== Seksi Beranda ===== */
+
+.beranda__seksi {
+  margin-bottom: 32px;
+}
+
+.beranda__seksi-judul {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #5c4a2a;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #e0d6c2;
+}
+
 /* ===== Modul List ===== */
 
 .beranda__modul {
@@ -97,6 +112,20 @@ body {
   flex-wrap: wrap;
 }
 
+.modul-card__badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #8b2500;
+  background: #fef9f2;
+  border: 1px solid #e0d6c2;
+  border-radius: 6px;
+  padding: 2px 8px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
 .modul-card__estimasi {
   font-size: 0.85rem;
   color: #7a6b50;
@@ -121,6 +150,91 @@ body {
 }
 
 .status-segera {
+  background: #e8e0d4;
+  color: #5c4a2a;
+}
+
+/* ===== Latihan Taktik Card ===== */
+
+.taktik-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+}
+
+.taktik-card {
+  background: #ffffff;
+  border: 1px solid #e0d6c2;
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.taktik-card--aktif {
+  cursor: pointer;
+  border-color: #8b2500;
+  border-width: 2px;
+}
+
+.taktik-card--aktif:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.taktik-card--terkunci {
+  cursor: default;
+  opacity: 0.7;
+  background: #f9f7f2;
+}
+
+.taktik-card__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.taktik-card__icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.taktik-card__nama {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #2c2416;
+}
+
+.taktik-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.taktik-card__estimasi {
+  font-size: 0.85rem;
+  color: #7a6b50;
+}
+
+.taktik-card__status {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.status-siap {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-terkunci {
   background: #e8e0d4;
   color: #5c4a2a;
 }

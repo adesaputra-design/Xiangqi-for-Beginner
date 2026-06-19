@@ -52,7 +52,7 @@ function showQuizFaceOff(): void {
   renderQuiz(root, {
     soal: SOAL_FACE_OFF,
     boardMap: BOARD_SOAL_FACE_OFF,
-    judulModul: "Modul 1 — General Face-off",
+    judulModul: "Prasyarat 1 — General Face-off",
     modulId: "modul-1",
     onSelesai: (skor) => {
       // Simpan progress ke localStorage
@@ -70,7 +70,7 @@ function showQuizPao(): void {
   renderQuiz(root, {
     soal: SOAL_PAO,
     boardMap: BOARD_SOAL_PAO,
-    judulModul: "Modul 2 — Meriam (Pao)",
+    judulModul: "Prasyarat 2 — Meriam (Pao)",
     modulId: "modul-2",
     onSelesai: (skor) => {
       const progress = {
@@ -87,7 +87,7 @@ function showQuizBing(): void {
   renderQuiz(root, {
     soal: SOAL_BING,
     boardMap: BOARD_SOAL_BING,
-    judulModul: "Modul 3 — Prajurit (Bing)",
+    judulModul: "Prasyarat 3 — Prajurit (Bing)",
     modulId: "modul-3",
     onSelesai: (skor) => {
       const progress = {
@@ -104,7 +104,7 @@ function showQuizMa(): void {
   renderQuiz(root, {
     soal: SOAL_MA,
     boardMap: BOARD_SOAL_MA,
-    judulModul: "Modul 4 — Kuda (Ma)",
+    judulModul: "Prasyarat 4 — Kuda (Ma)",
     modulId: "modul-4",
     onSelesai: (skor) => {
       const progress = {
@@ -121,7 +121,7 @@ function showQuizXiang(): void {
   renderQuiz(root, {
     soal: SOAL_XIANG,
     boardMap: BOARD_SOAL_XIANG,
-    judulModul: "Modul 5 — Gajah (Xiang)",
+    judulModul: "Prasyarat 5 — Gajah (Xiang)",
     modulId: "modul-5",
     onSelesai: (skor) => {
       const progress = {

@@ -37,13 +37,15 @@ function statusClass(status: StatusModul): string {
   }
 }
 
-function renderModulCard(modul: ModulInfo): string {
+function renderModulCard(modul: ModulInfo, index: number): string {
   const status = bacaStatusDariStorage(modul.id);
   const label = statusLabel(status);
   const cssClass = statusClass(status);
+  const prasyaratKe = index + 1;
 
   return `
     <li class="modul-card" data-modul-id="${modul.id}">
+      <span class="modul-card__badge">Prasyarat ${prasyaratKe}</span>
       <div class="modul-card__header">
         <h2 class="modul-card__nama">${modul.nama}</h2>
       </div>
@@ -55,27 +57,75 @@ function renderModulCard(modul: ModulInfo): string {
   `;
 }
 
+function semuaPrasyaratSelesai(): boolean {
+  for (let i = 1; i <= 5; i++) {
+    const status = bacaStatusDariStorage(`modul-${i}`);
+    if (status !== "selesai") return false;
+  }
+  return true;
+}
+
+function renderSeksiLatihanTaktik(terbuka: boolean): string {
+  if (terbuka) {
+    return `
+      <li class="taktik-card taktik-card--aktif js-taktik-card" data-action="mulai-latihan">
+        <div class="taktik-card__header">
+          <span class="taktik-card__icon">🧩</span>
+          <h2 class="taktik-card__nama">Latihan Taktik</h2>
+        </div>
+        <div class="taktik-card__meta">
+          <span class="taktik-card__estimasi">⏱ 10 soal / sesi</span>
+          <span class="taktik-card__status status-siap">Mulai Latihan →</span>
+        </div>
+      </li>
+    `;
+  }
+
+  return `
+    <li class="taktik-card taktik-card--terkunci">
+      <div class="taktik-card__header">
+        <span class="taktik-card__icon">🔒</span>
+        <h2 class="taktik-card__nama">Latihan Taktik</h2>
+      </div>
+      <div class="taktik-card__meta">
+        <span class="taktik-card__estimasi"></span>
+        <span class="taktik-card__status status-terkunci">Selesaikan semua Prasyarat dulu</span>
+      </div>
+    </li>
+  `;
+}
+
 export function renderBeranda(container: HTMLElement): void {
-  const cards = DAFTAR_MODUL.map(renderModulCard).join("");
+  const terbuka = semuaPrasyaratSelesai();
+  const cards = DAFTAR_MODUL.map((modul, index) => renderModulCard(modul, index)).join("");
+  const latihanTaktik = renderSeksiLatihanTaktik(terbuka);
 
   container.innerHTML = `
     <div class="beranda">
       <header class="beranda__header">
-        <h1 class="beranda__judul">Xiangqi untuk Pemula</h1>
+        <h1 class="beranda__judul">Latihan Taktik Xiangqi</h1>
         <p class="beranda__deskripsi">
-          Belajar aturan xiangqi (catur Cina) selangkah demi selangkah — dari dasar
-          hingga mahir. Setiap modul berisi eksplorasi papan interaktif dan quiz.
+          Asah insting kompetisi dengan puzzle taktik dari 26 teknik rahasia skakmat.
         </p>
       </header>
 
-      <section class="beranda__modul">
+      <section class="beranda__seksi">
+        <h2 class="beranda__seksi-judul">Prasyarat</h2>
         <ol class="modul-list">
           ${cards}
         </ol>
-        <div class="beranda__papan-link">
-          <a href="#" class="btn-papan js-btn-papan">🏁 Lihat Papan Posisi Awal</a>
-        </div>
       </section>
+
+      <section class="beranda__seksi">
+        <h2 class="beranda__seksi-judul">Latihan Taktik</h2>
+        <ol class="taktik-list">
+          ${latihanTaktik}
+        </ol>
+      </section>
+
+      <div class="beranda__papan-link">
+        <a href="#" class="btn-papan js-btn-papan">🏁 Lihat Papan Posisi Awal</a>
+      </div>
 
       <footer class="beranda__footer">
         <p>Belajar xiangqi tidak pernah semudah ini 🇨🇳</p>
