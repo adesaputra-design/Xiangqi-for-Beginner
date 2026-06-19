@@ -9,6 +9,20 @@ export interface QuizSoal {
   boardKey: string | null;
 }
 
+export type TipeTaktik = "serangan" | "pertahanan" | "posisi" | "endgame";
+
+export interface PuzzleSoal extends QuizSoal {
+  tipeTaktik: TipeTaktik;
+  level: 1 | 2 | 3;
+}
+
+export interface SesiRecord {
+  tanggal: string;
+  akurasi: number;
+  errorPerTipe: Record<TipeTaktik, number>;
+  level: number;
+}
+
 export interface QuizSession {
   soal: QuizSoal[];
   currentIndex: number;

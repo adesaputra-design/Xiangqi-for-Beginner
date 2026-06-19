@@ -7,6 +7,9 @@ import { SOAL_PAO, BOARD_SOAL_PAO } from "./data/quizPao";
 import { SOAL_BING, BOARD_SOAL_BING } from "./data/quizBing";
 import { SOAL_MA, BOARD_SOAL_MA } from "./data/quizMa";
 import { SOAL_XIANG, BOARD_SOAL_XIANG } from "./data/quizXiang";
+import { BANK_PUZZLE_LEVEL_1 } from "./data/puzzleTaktik";
+import { ambilSesiHarian, simpanSesiRecord, bacaLevelAktif } from "./logic/sesiLatihan";
+import type { SesiRecord } from "./logic/quizEngine";
 import "./style.css";
 
 const root = document.body;
@@ -41,6 +44,15 @@ function showBeranda(): void {
       }
     });
   });
+
+  // Klik kartu Latihan Taktik → sesi harian
+  const taktikCard = root.querySelector(".js-taktik-card");
+  if (taktikCard) {
+    taktikCard.addEventListener("click", (e) => {
+      e.preventDefault();
+      showLatihanTaktik();
+    });
+  }
 }
 
 function showPapan(): void {
@@ -55,7 +67,6 @@ function showQuizFaceOff(): void {
     judulModul: "Prasyarat 1 — General Face-off",
     modulId: "modul-1",
     onSelesai: (skor) => {
-      // Simpan progress ke localStorage
       const progress = {
         selesai: skor.persen >= 70,
         mulai: true,
@@ -130,6 +141,28 @@ function showQuizXiang(): void {
         skor: skor.persen,
       };
       localStorage.setItem("progress-modul-5", JSON.stringify(progress));
+    },
+  });
+}
+
+function showLatihanTaktik(): void {
+  const level = bacaLevelAktif();
+  const sesi = ambilSesiHarian(BANK_PUZZLE_LEVEL_1, level, 10);
+
+  renderQuiz(root, {
+    soal: sesi,
+    boardMap: {},
+    judulModul: "Latihan Taktik",
+    modulId: "latihan-taktik",
+    onSelesai: (skor) => {
+      const today = new Date().toISOString().slice(0, 10);
+      const record: SesiRecord = {
+        tanggal: today,
+        akurasi: skor.persen,
+        errorPerTipe: { serangan: 0, pertahanan: 0, posisi: 0, endgame: 0 },
+        level,
+      };
+      simpanSesiRecord(record);
     },
   });
 }
