@@ -8,8 +8,8 @@ import { SOAL_BING, BOARD_SOAL_BING } from "./data/quizBing";
 import { SOAL_MA, BOARD_SOAL_MA } from "./data/quizMa";
 import { SOAL_XIANG, BOARD_SOAL_XIANG } from "./data/quizXiang";
 import { BANK_PUZZLE_LEVEL_1 } from "./data/puzzleTaktik";
-import { ambilSesiHarian, simpanSesiRecord, bacaLevelAktif } from "./logic/sesiLatihan";
-import type { SesiRecord } from "./logic/quizEngine";
+import { ambilSesiHarian, simpanSesiRecord, bacaLevelAktif, hitungErrorPerTipe } from "./logic/sesiLatihan";
+import type { SesiRecord, PuzzleSoal } from "./logic/quizEngine";
 import "./style.css";
 
 const root = document.body;
@@ -154,12 +154,16 @@ function showLatihanTaktik(): void {
     boardMap: {},
     judulModul: "Latihan Taktik",
     modulId: "latihan-taktik",
-    onSelesai: (skor) => {
+    onSelesai: (skor, session) => {
       const today = new Date().toISOString().slice(0, 10);
+      const errorPerTipe = hitungErrorPerTipe(
+        session.soal as PuzzleSoal[],
+        session.jawaban
+      );
       const record: SesiRecord = {
         tanggal: today,
         akurasi: skor.persen,
-        errorPerTipe: { serangan: 0, pertahanan: 0, posisi: 0, endgame: 0 },
+        errorPerTipe,
         level,
       };
       simpanSesiRecord(record);

@@ -1,6 +1,7 @@
 import {
   type QuizSession,
   type QuizSoal,
+  type TipeTaktik,
   createQuizSession,
   jawabSoal,
   lanjutSoal,
@@ -10,6 +11,7 @@ import {
 import type { BoardState } from "../data/types";
 import { renderPapanSVG } from "./renderPapan";
 import { createBoard } from "../data/papan";
+import { hitungErrorPerTipe } from "../logic/sesiLatihan";
 
 // ============================================================
 // State quiz lokal
@@ -17,7 +19,7 @@ import { createBoard } from "../data/papan";
 
 let session: QuizSession | null = null;
 let boardMap: Record<string, Record<string, string | null>> = {};
-let onSelesaiCallback: ((skor: ReturnType<typeof hitungSkor>) => void) | null = null;
+let onSelesaiCallback: ((skor: ReturnType<typeof hitungSkor>, session: QuizSession) => void) | null = null;
 
 // ============================================================
 // Render Quiz
@@ -28,7 +30,7 @@ export interface QuizConfig {
   boardMap?: Record<string, Record<string, string | null>>;
   judulModul: string;
   modulId: string;
-  onSelesai?: (skor: ReturnType<typeof hitungSkor>) => void;
+  onSelesai?: (skor: ReturnType<typeof hitungSkor>, session: QuizSession) => void;
 }
 
 export function renderQuiz(container: HTMLElement, config: QuizConfig): void {
@@ -186,8 +188,55 @@ function renderSkor(container: HTMLElement, judulModul: string): void {
 
   const skor = hitungSkor(session);
   const salah = soalSalah(session);
+  const isiPuzzle = session.soal.length > 0 && session.soal[0].tipeTaktik !== undefined;
 
   const passingGrade = skor.persen >= 70;
+
+  // Build taktik breakdown (only for puzzle sessions)
+  let taktikHtml = "";
+  if (isiPuzzle) {
+    const errorPerTipe = hitungErrorPerTipe(
+      session.soal as any[],
+      session.jawaban
+    );
+    const tipeList: { tipe: TipeTaktik; label: string; ikon: string }[] = [
+      { tipe: "serangan", label: "Serangan", ikon: "⚔️" },
+      { tipe: "pertahanan", label: "Pertahanan", ikon: "🛡️" },
+      { tipe: "posisi", label: "Posisi", ikon: "📐" },
+      { tipe: "endgame", label: "Endgame", ikon: "🏁" },
+    ];
+
+    const rows = tipeList
+      .map((t) => {
+        const totalTipe = session!.soal.filter(
+          (s) => s.tipeTaktik === t.tipe
+        ).length;
+        const error = errorPerTipe[t.tipe];
+        const benar = totalTipe - error;
+        const persen = totalTipe > 0 ? Math.round((benar / totalTipe) * 100) : 0;
+        const isLemah = persen < 50 && totalTipe > 0;
+
+        if (totalTipe === 0) return "";
+
+        return `
+          <div class="breakdown-row ${isLemah ? "breakdown-row--lemah" : ""}">
+            <span class="breakdown-row__ikon">${t.ikon}</span>
+            <span class="breakdown-row__label">${t.label}</span>
+            <span class="breakdown-row__nilai">${benar}/${totalTipe} benar</span>
+            <span class="breakdown-row__persen ${isLemah ? "breakdown-row__persen--lemah" : "breakdown-row__persen--baik"}">${persen}%</span>
+          </div>`;
+      })
+      .filter(Boolean)
+      .join("");
+
+    taktikHtml = `
+      <div class="quiz-breakdown">
+        <h3 class="quiz-breakdown__judul">Breakdown per Taktik</h3>
+        <div class="breakdown-list">
+          ${rows}
+        </div>
+      </div>`;
+  }
 
   container.innerHTML = `
     <div class="quiz-container quiz-skor">
@@ -198,9 +247,15 @@ function renderSkor(container: HTMLElement, judulModul: string): void {
         <div class="quiz-skor__nilai">${skor.persen}%</div>
         <div class="quiz-skor__detail">${skor.benar} / ${skor.total} benar</div>
       </div>
-      <div class="quiz-skor__status ${passingGrade ? "lulus" : "gagal"}">
+      ${isiPuzzle
+        ? `<div class="quiz-skor__status ${passingGrade ? "lulus" : "gagal"}">
+        ${passingGrade ? "🎉 Latihan Selesai! Bagus sekali!" : "📚 Coba lagi — analisis taktikmu di bawah"}
+      </div>`
+        : `<div class="quiz-skor__status ${passingGrade ? "lulus" : "gagal"}">
         ${passingGrade ? "🎉 Modul Selesai! Bagus sekali!" : "📚 Coba lagi — minimal 70% untuk lulus"}
-      </div>
+      </div>`
+      }
+      ${taktikHtml}
       ${
         salah.length > 0
           ? `
@@ -216,9 +271,9 @@ function renderSkor(container: HTMLElement, judulModul: string): void {
     </div>
   `;
 
-  // Callback onSelesai (save progress)
+  // Callback onSelesai (save progress) — pass full session for errorPerTipe
   if (onSelesaiCallback) {
-    onSelesaiCallback(skor);
+    onSelesaiCallback(skor, session);
   }
 
   // Attach events

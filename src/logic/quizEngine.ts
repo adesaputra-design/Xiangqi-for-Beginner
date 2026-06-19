@@ -7,6 +7,10 @@ export interface QuizSoal {
   penjelasan: string;
   /** Key ke board kustom di createBoard, atau null kalau tidak pakai gambar */
   boardKey: string | null;
+  /** Opsional: kategori taktik (hanya untuk puzzle Latihan Taktik) */
+  tipeTaktik?: TipeTaktik;
+  /** Opsional: level kesulitan (hanya untuk puzzle Latihan Taktik) */
+  level?: 1 | 2 | 3;
 }
 
 export type TipeTaktik = "serangan" | "pertahanan" | "posisi" | "endgame";

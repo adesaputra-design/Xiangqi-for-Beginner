@@ -578,6 +578,77 @@ body {
   background: #a8320a;
 }
 
+/* ===== Quiz Breakdown Taktik ===== */
+
+.quiz-breakdown {
+  margin-bottom: 20px;
+  background: #fef9f2;
+  border: 1px solid #e0d6c2;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.quiz-breakdown__judul {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #5c4a2a;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.breakdown-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #e0d6c2;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.breakdown-row--lemah {
+  background: #fce4e4;
+  border-color: #dc2626;
+}
+
+.breakdown-row__ikon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.breakdown-row__label {
+  font-weight: 600;
+  color: #2c2416;
+  flex: 1;
+}
+
+.breakdown-row__nilai {
+  color: #7a6b50;
+  font-size: 0.8rem;
+}
+
+.breakdown-row__persen {
+  font-weight: 700;
+  font-size: 0.85rem;
+  min-width: 36px;
+  text-align: right;
+}
+
+.breakdown-row__persen--baik {
+  color: #16a34a;
+}
+
+.breakdown-row__persen--lemah {
+  color: #dc2626;
+}
+
 /* ===== Responsive ===== */
 
 @media (max-width: 360px) {
