@@ -1,5 +1,6 @@
 import { renderBeranda } from "./ui/renderBeranda";
 import { renderPapan } from "./ui/renderPapan";
+import { renderRiwayat } from "./ui/renderRiwayat";
 import { createInitialBoard } from "./data/papan";
 import { renderQuiz } from "./ui/renderQuiz";
 import { SOAL_FACE_OFF, BOARD_SOAL_FACE_OFF } from "./data/quizFaceOff";
@@ -7,7 +8,7 @@ import { SOAL_PAO, BOARD_SOAL_PAO } from "./data/quizPao";
 import { SOAL_BING, BOARD_SOAL_BING } from "./data/quizBing";
 import { SOAL_MA, BOARD_SOAL_MA } from "./data/quizMa";
 import { SOAL_XIANG, BOARD_SOAL_XIANG } from "./data/quizXiang";
-import { BANK_PUZZLE_LEVEL_1 } from "./data/puzzleTaktik";
+import { BANK_PUZZLE } from "./data/puzzleTaktik";
 import { ambilSesiHarian, simpanSesiRecord, bacaLevelAktif, hitungErrorPerTipe } from "./logic/sesiLatihan";
 import type { SesiRecord, PuzzleSoal } from "./logic/quizEngine";
 import "./style.css";
@@ -51,6 +52,15 @@ function showBeranda(): void {
     taktikCard.addEventListener("click", (e) => {
       e.preventDefault();
       showLatihanTaktik();
+    });
+  }
+
+  // Klik tombol "Lihat Progress" → halaman riwayat
+  const btnProgress = root.querySelector(".js-btn-progress");
+  if (btnProgress) {
+    btnProgress.addEventListener("click", (e) => {
+      e.preventDefault();
+      showRiwayat();
     });
   }
 }
@@ -147,7 +157,7 @@ function showQuizXiang(): void {
 
 function showLatihanTaktik(): void {
   const level = bacaLevelAktif();
-  const sesi = ambilSesiHarian(BANK_PUZZLE_LEVEL_1, level, 10);
+  const sesi = ambilSesiHarian(BANK_PUZZLE, level, 10);
 
   renderQuiz(root, {
     soal: sesi,
@@ -169,6 +179,10 @@ function showLatihanTaktik(): void {
       simpanSesiRecord(record);
     },
   });
+}
+
+function showRiwayat(): void {
+  renderRiwayat(root);
 }
 
 // Listen for navigate-beranda custom event

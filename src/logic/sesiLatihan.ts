@@ -79,6 +79,16 @@ export function bacaRiwayatSesi(): SesiRecord[] {
 }
 
 /**
+ * Hitung rata-rata akurasi dari array SesiRecord.
+ * Return 0 jika array kosong, otherwise Math.round dari average.
+ */
+export function hitungRataAkurasi(records: SesiRecord[]): number {
+  if (records.length === 0) return 0;
+  const sum = records.reduce((acc, r) => acc + r.akurasi, 0);
+  return Math.round(sum / records.length);
+}
+
+/**
  * Hitung error per tipe taktik dari quiz session.
  * Membutuhkan session dengan soal bertipe PuzzleSoal[].
  */

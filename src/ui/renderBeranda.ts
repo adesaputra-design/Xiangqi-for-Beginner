@@ -121,6 +121,9 @@ export function renderBeranda(container: HTMLElement): void {
         <ol class="taktik-list">
           ${latihanTaktik}
         </ol>
+        <div class="beranda__progress-link">
+          <a href="#" class="btn-progress js-btn-progress">📊 Lihat Progress</a>
+        </div>
       </section>
 
       <div class="beranda__papan-link">
